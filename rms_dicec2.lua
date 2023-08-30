@@ -31,7 +31,7 @@ RegisterNUICallback('escape', function(data, cb)
 end)
 
 -- Evento para activar una animación relacionada con el dado
-RegisterNetEvent("rms_dice:ToggleDiceAnim")
+--[[ RegisterNetEvent("rms_dice:ToggleDiceAnim")
 AddEventHandler("rms_dice:ToggleDiceAnim", function()
     TaskStartScenarioInPlace(PlayerPedId(), GetHashKey('WORLD_PLAYER_PICKUP_WEAPON_THROWN_TOMAHAWK_ANCIENT'), -1, true, false, false, false)
 end)
@@ -40,7 +40,14 @@ end)
 RegisterNetEvent('rms_dice:client:OpenDice')
 AddEventHandler('rms_dice:client:OpenDice', function()
     OpenDiceInterface()
-end) 
+end)  ]]
+
+RegisterNetEvent('rms_dice:client:OpenDice')
+AddEventHandler('rms_dice:client:OpenDice', function()
+    TaskStartScenarioInPlace(PlayerPedId(), GetHashKey('WORLD_PLAYER_PICKUP_WEAPON_THROWN_TOMAHAWK_ANCIENT'), -1, true, false, false, false)
+    OpenDiceInterface()
+end)
+
 
 -- Evento para cerrar la interfaz del dado
 AddEventHandler('onResourceStop', function(resourceName)
