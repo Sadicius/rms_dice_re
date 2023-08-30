@@ -6,7 +6,7 @@ RSGCore.Functions.CreateUseableItem("dice", function(source, item)
         if Player.Functions.RemoveItem(item.name, 1, item.slot) then
         -- Generar un número aleatorio de 1 a 6 para el dado
        
-        TriggerClientEvent('rms_dice:ToggleDiceAnim', source)
+        --TriggerClientEvent('rms_dice:ToggleDiceAnim', source)
         TriggerClientEvent("rms_dice:client:OpenDice", source)
         Wait(2000)
         local mensajeChat = "¡El resultado del dado es: " .. diceNumber .. "!"
