@@ -1,16 +1,14 @@
+var diceNumber = Math.floor((Math.random() * 6)+ 1);
+        
 // Llama a la función para iniciar la animación del dado automáticamente cuando se carga el documento
-
-
 window.addEventListener('message', function(event) {
+    
     if (event.data.show == true) {
-        // Llama a la función flipDice con un número aleatorio
-        const diceNumber = Math.floor((Math.random() * 6) + 1);
-        console.log(diceNumber);
+        // Función para enviar datos al servidor
+            
         flipDice(diceNumber);
-        
-        // Enviar el número del dado al servidor
-        sendDataToServer(diceNumber); // Send the dice number to the server
-        
+        console.log("diceNumber - flipDice");
+
         // Mostrar el elemento HTML después de configurar la animación
         const elementoHTML = document.getElementById('miElementoHTML');
         elementoHTML.style.display = 'block';
@@ -28,13 +26,13 @@ window.addEventListener('message', function(event) {
 function flipDice(diceNumber) {
     const cube = document.querySelector('.cube');
     const time = 2;
-
+    var diceNumber = diceNumber
     cube.style.transition = '';
     cube.style.transform = `translateY(400px) rotateX(0deg) rotateY(0deg) rotateZ(0deg)`;
     
     setTimeout(() => {
         cube.style.transition = `transform ${time}s`;
-        
+        console.log(diceNumber); 
         switch (diceNumber) {
             case 1:
                 cube.style.transform = `translateY(400px) rotateX(3600deg) rotateY(3600deg) rotateZ(3600deg)`;
@@ -55,7 +53,7 @@ function flipDice(diceNumber) {
                 cube.style.transform = `translateY(400px) rotateX(3600deg) rotateY(1980deg) rotateZ(3600deg)`;
                 break;
         };
-        
+
         // Cierra la interfaz después de 5 segundos
         setTimeout(() => {
             closeDice();
@@ -70,19 +68,11 @@ function closeDice() {
     $.post('https://rms_dice_re/CloseNui');
 }
 
-// Function to send data to the server
-function sendDataToServer(diceNumber) {
-    // Use TriggerServerEvent to send data to the server
-    $.post('https://rms_dice_re/SendDiceNumber', JSON.stringify({
-        data: diceNumber,
-    }));
-    console.log(diceNumber);
-}
-
 // Evento de tecla "Esc" para cerrar la interfaz
 document.addEventListener('keyup', function(event) {
     if (event.key === 'Escape' || event.keyCode === 27) {
         closeDice();
     }
 });
+
 
