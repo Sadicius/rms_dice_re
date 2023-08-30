@@ -14,6 +14,6 @@ And then the activation of the animation between lua and js.
 
 #new small changes, but now I just have to get the js function that does the animation to run when I use the item
 
-https://streamable.com/yadru6
+https://streamable.com/4qk12m
 
 work in progress, still unfinished
