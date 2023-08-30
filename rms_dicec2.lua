@@ -1,59 +1,56 @@
 local RSGCore = exports['rsg-core']:GetCoreObject()
+local diceProp = nil
 
-local dadoActivo = 'dice' -- Este valor se actualiza cuando se elige un dado específico
-local diceNumber = math.random(1, 6)
+-- Función para reproducir una animación
+local function PlayAnimation(dict, name, duration)
+    RequestAnimDict(dict)
+    while not HasAnimDictLoaded(dict) do Wait(0) end
+    TaskPlayAnim(PlayerPedId(), dict, name, 1.0, -1.0, duration, 49, 1, false, false, false)
+    RemoveAnimDict(dict)
+end
 
--- Evento para mostrar el menú de elección de dados
-RegisterNetEvent("rms_dice:Client:DiceChoosed")
-AddEventHandler("rms_dice:Client:DiceChoosed", function(dadoActivo)
-    SendNUIMessage({
-        open = true,
-        class = 'choose',
-        data = dadoActivo,
-    })
-end)
-
--- Callback para recibir el número del dado activo desde la interfaz
-RegisterNUICallback('NumerodadoActivo', function(data)
-    local dadoActivo = data.DadoActivo
-    local diceNumber = data.DiceNumber -- Recibe el número del dado desde el servidor
-
-    TriggerServerEvent('rms_dice:Server:GetDado', dadoActivo, diceNumber)
-end)
-
---[[ -- Evento para activar la animación de lanzamiento del dado
-RegisterNetEvent("rms_dice:randomDice")
-AddEventHandler("rms_dice:randomDice", function()
-    local diceNumber = math.random(1, 6) -- Genera un número aleatorio de 1 a 6
-    print('Número del dado:', diceNumber)
-    TriggerServerEvent('rms_dice:Server:rewardice', diceNumber)
-end) ]]
-
--- Evento personalizado para establecer el número del dado en el lado del cliente
-RegisterNetEvent("rms_dice:Client:SetDiceNumber")
-AddEventHandler("rms_dice:Client:SetDiceNumber", function(diceNumber)
-    -- Aquí puedes usar diceNumber para cualquier propósito en el lado del cliente
-    -- Por ejemplo, puedes activar la animación del dado o mostrar el número en la interfaz del usuario
-end)
-
--- Callback para cerrar la interfaz del dado
-RegisterNUICallback('CloseNui', function()
+-- Función para cerrar la interfaz del dado
+local function CloseDiceInterface()
     SetNuiFocus(false, false)
+    SendNUIMessage({ show = false })
+    ClearPedSecondaryTask(PlayerPedId())
+    SetEntityAsMissionEntity(diceProp)
+    DeleteObject(diceProp)
+end
+
+-- Función para abrir la interfaz del dado
+local function OpenDiceInterface(diceName)
+    local ped = PlayerPedId()
+    local ped_coords = GetEntityCoords(ped)
+    SetNuiFocus(true, true)
+    SendNUIMessage({
+        show = true,
+        dice = diceName,
+    })
+end
+
+-- Callback para manejar la acción de escape
+RegisterNUICallback('escape', function(data, cb)
+    local ped = PlayerPedId()
+    SetNuiFocus(false, false)
+    cb('ok')
 end)
 
--- Evento para activar una animación relacionada con el dado (ejemplo)
+-- Evento para activar una animación relacionada con el dado
 RegisterNetEvent("rms_dice:ToggleDiceAnim")
 AddEventHandler("rms_dice:ToggleDiceAnim", function()
     TaskStartScenarioInPlace(PlayerPedId(), GetHashKey('WORLD_PLAYER_PICKUP_WEAPON_THROWN_TOMAHAWK_ANCIENT'), -1, true, false, false, false)
 end)
 
--- Define una función personalizada en el lado del cliente para llamar a flipDice()
-RegisterNetEvent("rms_dice:Client:StartDiceAnimation")
-AddEventHandler("rms_dice:Client:StartDiceAnimation", function()
-    TriggerEvent("FlipDice")
+-- Evento para abrir la interfaz del dado
+RegisterNetEvent('rms_dice:client:OpenDice')
+AddEventHandler('rms_dice:client:OpenDice', function(diceName)
+    OpenDiceInterface(diceName)
 end)
 
--- Exportación de funciones para su uso en otros scripts
-exports('openDice', openDice)
-exports('closeDice', closeDice)
-exports('showDice', showDice)
+-- Evento para cerrar la interfaz del dado
+AddEventHandler('onResourceStop', function(resourceName)
+    if (GetCurrentResourceName() == resourceName) then
+        CloseDiceInterface()
+    end
+end)
