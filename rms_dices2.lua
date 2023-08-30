@@ -1,5 +1,11 @@
 local RSGCore = exports['rsg-core']:GetCoreObject()
 
+RegisterNetEvent('rms_dice:server:SendDiceNumber')
+AddEventHandler('rms_dice:server:SendDiceNumber', function(diceNumber)
+    -- The 'diceNumber' variable now contains the result from the client
+    print("Received dice number from client: " .. diceNumber)
+end)
+
 -- Función para generar un número aleatorio de 1 a 6
 local function RollDice()
     return math.random(1, 6)
@@ -21,7 +27,7 @@ end
 
 -- Evento para abrir la interfaz del dado
 CreateThread(function()
-    RSGCore.Functions.CreateUseableItem("dice", function(source, item)
+    RSGCore.Functions.CreateUseableItem("dice", function(source)
         TriggerClientEvent("rms_dice:client:OpenDice", source)
     end)
 end)

@@ -1,33 +1,27 @@
 local RSGCore = exports['rsg-core']:GetCoreObject()
-local diceProp = nil
-
--- Función para reproducir una animación
-local function PlayAnimation(dict, name, duration)
-    RequestAnimDict(dict)
-    while not HasAnimDictLoaded(dict) do Wait(0) end
-    TaskPlayAnim(PlayerPedId(), dict, name, 1.0, -1.0, duration, 49, 1, false, false, false)
-    RemoveAnimDict(dict)
-end
+--local diceProp = nil
 
 -- Función para cerrar la interfaz del dado
 local function CloseDiceInterface()
     SetNuiFocus(false, false)
     SendNUIMessage({ show = false })
     ClearPedSecondaryTask(PlayerPedId())
-    SetEntityAsMissionEntity(diceProp)
-    DeleteObject(diceProp)
+    --SetEntityAsMissionEntity(diceProp)
+    --DeleteObject(diceProp)
 end
 
--- Función para abrir la interfaz del dado
-local function OpenDiceInterface(diceName)
+ -- Función para abrir la interfaz del dado
+local function OpenDiceInterface()
     local ped = PlayerPedId()
     local ped_coords = GetEntityCoords(ped)
     SetNuiFocus(true, true)
-    SendNUIMessage({
-        show = true,
-        dice = diceName,
-    })
+    SendNUIMessage({ show = true })
 end
+
+-- Callback para cerrar la interfaz del dado
+RegisterNUICallback('CloseNui', function()
+    SetNuiFocus(false, false)
+end)
 
 -- Callback para manejar la acción de escape
 RegisterNUICallback('escape', function(data, cb)
@@ -44,9 +38,9 @@ end)
 
 -- Evento para abrir la interfaz del dado
 RegisterNetEvent('rms_dice:client:OpenDice')
-AddEventHandler('rms_dice:client:OpenDice', function(diceName)
-    OpenDiceInterface(diceName)
-end)
+AddEventHandler('rms_dice:client:OpenDice', function()
+    OpenDiceInterface()
+end) 
 
 -- Evento para cerrar la interfaz del dado
 AddEventHandler('onResourceStop', function(resourceName)

@@ -3,19 +3,18 @@ window.addEventListener('message', function(event) {
     if (event.data.show == true) {
         // Llama a la función flipDice con un número aleatorio
         const diceNumber = Math.floor((Math.random() * 6) + 1);
+        console.log(diceNumber);
         flipDice(diceNumber);
-
+        
+        // Enviar el número del dado al servidor
+        sendDataToServer(diceNumber); // Send the dice number to the server
+        
         // Mostrar el elemento HTML después de configurar la animación
         const elementoHTML = document.getElementById('miElementoHTML');
         elementoHTML.style.display = 'block';
         setTimeout(() => {
             elementoHTML.style.display = 'none'; // Ocultar después de 5 segundos
         }, 5000); // 5000 milisegundos (5 segundos)
-
-        // Enviar el número del dado al servidor
-        $.post('https://rms_dice/NumerodadoActivo', JSON.stringify({
-            DiceNumber: diceNumber,
-        }));
 
         $('body').css('display', 'block');
     } else if (event.data.show == false) {
@@ -54,6 +53,12 @@ function flipDice(diceNumber) {
                 cube.style.transform = `translateY(400px) rotateX(3600deg) rotateY(1980deg) rotateZ(3600deg)`;
                 break;
         };
+        
+        // Cierra la interfaz después de 5 segundos
+        setTimeout(() => {
+            closeDice();
+            //console.log("closeDice on");
+        }, 3000);
 
     }, time * 1000); // Multiplicar por 1000 para obtener milisegundos
 }
@@ -63,19 +68,19 @@ function closeDice() {
     $.post('https://rms_dice_re/CloseNui');
 }
 
+// Function to send data to the server
+function sendDataToServer(diceNumber) {
+    // Use TriggerServerEvent to send data to the server
+    $.post('https://rms_dice_re/SendDiceNumber', JSON.stringify({
+        data: diceNumber,
+    }));
+    console.log(diceNumber);
+}
+
 // Evento de tecla "Esc" para cerrar la interfaz
 document.addEventListener('keyup', function(event) {
     if (event.key === 'Escape' || event.keyCode === 27) {
         closeDice();
-        //hideInterface();
     }
 });
 
-// Ocultar la interfaz
-function hideInterface() {
-    $('body').css('display', 'none');
-    //$('#inner').turn('page', 1);
-    $('#inner').turn('destroy');
-    inner.style = '';
-    $.post(`https://${GetParentResourceName()}/escape`, JSON.stringify({}));
-}
