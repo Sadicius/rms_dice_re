@@ -2,6 +2,10 @@
     display: none;
 }
 
+body {
+    cursor: none;
+}
+
 .container {
     width: 10vh;
     height: 10vh;

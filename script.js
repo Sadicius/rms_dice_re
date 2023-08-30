@@ -1,4 +1,6 @@
 // Llama a la función para iniciar la animación del dado automáticamente cuando se carga el documento
+
+
 window.addEventListener('message', function(event) {
     if (event.data.show == true) {
         // Llama a la función flipDice con un número aleatorio
