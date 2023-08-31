@@ -1,5 +1,4 @@
 local RSGCore = exports['rsg-core']:GetCoreObject()
-local diceNumber = math.random(1, 6)
 
 RSGCore.Functions.CreateUseableItem("dice", function(source, item)
     local Player = RSGCore.Functions.GetPlayer(source)
@@ -8,8 +7,6 @@ RSGCore.Functions.CreateUseableItem("dice", function(source, item)
         -- Generar un número aleatorio de 1 a 6 para el dado
         TriggerClientEvent("rms_dice:client:OpenDice", source)
         Wait(2000)
-        local mensajeChat = "¡El resultado del dado es: " .. diceNumber .. "!"
-        TriggerClientEvent('chatMessage', -1, mensajeChat)
         --local mensajeRol = "¡El resultado del dado es: " .. diceNumber .. "!"
         --TriggerClientEvent('RSGCore:triggerDisplay', -1, mensajeRol, source, "do") 
     end

@@ -14,6 +14,7 @@ end
 local function OpenDiceInterface()
     local ped = PlayerPedId()
     local ped_coords = GetEntityCoords(ped)
+    
     SetNuiFocus(true, true)
     SendNUIMessage({ 
         show = true;
@@ -33,8 +34,7 @@ RegisterNUICallback('escape', function(data, cb)
 end)
 
 RegisterNetEvent('rms_dice:client:OpenDice')
-AddEventHandler('rms_dice:client:OpenDice', function()
-    
+AddEventHandler('rms_dice:client:OpenDice', function(diceNumber)
     -- Ahora la función OpenDice recibe el argumento diceNumber
     TaskStartScenarioInPlace(PlayerPedId(), GetHashKey('WORLD_PLAYER_PICKUP_WEAPON_THROWN_TOMAHAWK_ANCIENT'), -1, true, false, false, false)
     OpenDiceInterface()
