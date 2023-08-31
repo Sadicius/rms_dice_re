@@ -14,7 +14,7 @@ window.addEventListener('message', function(event) {
         $.post(
             "https://rsg-inventory/Notify",
             JSON.stringify({
-                message: '¡El resultado del dado es: ' + diceNumber + '!',
+                message: '¡Number die: ' + diceNumber + '!',
                 type: "success",
             })
         ); 
