@@ -44,7 +44,7 @@ function flipDice(diceNumber) {
     
     setTimeout(() => {
         cube.style.transition = `transform ${time}s`;
-        console.log(diceNumber); 
+        //console.log(diceNumber); 
         switch (diceNumber) {
             case 1:
                 cube.style.transform = `translateY(400px) rotateX(3600deg) rotateY(3600deg) rotateZ(3600deg)`;
