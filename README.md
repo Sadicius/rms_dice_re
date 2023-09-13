@@ -16,3 +16,6 @@ need item "dice"
     `
 # By
 https://github.com/Sadicius
+
+# Credits
+Sadicius / Sadicius#1150 / https://linktr.ee/sadicius
