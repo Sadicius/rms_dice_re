@@ -14,4 +14,5 @@ need item "dice"
 
 `['dice']            = {['name'] = 'dice',        ['label'] = 'Dado de oro',    ['weight'] = 500,     ['type'] = 'item',    ['image'] = 'dice.png',        ['unique'] = false,        ['useable'] = true,        ['shouldClose'] = true,        ['combinable'] = nil,        ['level'] = 0,        ['description'] = 'Campfire'},
     `
-
+# By
+https://github.com/Sadicius
